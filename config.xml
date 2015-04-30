@@ -24,6 +24,6 @@
   <gap:plugin name="org.apache.cordova.dialogs"/>
   <gap:plugin name="org.apache.cordova.file"/>
   <gap:plugin name="org.apache.cordova.file-transfer"/>
-  <gap:plugin name="com.triarc.sqliteplugin"/>
+  <gap:plugin name="io.litehelpers.cordova.sqlite" version="0.7.6" />
   <access origin="*"/>
 </widget>
