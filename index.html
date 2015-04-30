@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>F.A.S.T.</title>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="jquery-mob/themes/basic.min.css" />
+	<link rel="stylesheet" href="jquery-mob/themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	
+	<script src="fleetAppRender.js"></script>
+	<script src="fleetAppLoader.js"></script>
+	
+</head>
+<body>
+
+<div data-role="page" data-theme="a" id="pageOne">
+	<div data-role="header">
+		<h1>Fleet Assessment and Support Tool</h1>
+	</div><!-- /header -->
+	<div role="main" class="ui-content" >
+		<div id="mainForm">
+			<form id="PageForm" >
+			<p>Choose Customer and Vehicle:</p>
+				<div id="customerForm" class="ui-grid-b">
+					<div id="custForm-a" class="ui-block-a"></div>
+					<div id="custForm-b" class="ui-block-b"></div>
+					<div id="custForm-c" class="ui-block-c"></div>
+				</div>
+				<span id="detail"></span>
+				<div id="infoForm">
+					<h4 class="ui-header">Fleetcheck Details:</h4>
+					<p>Tyre Details</p>
+					<div id="tyreInfo" class="ui-grid-a">
+						<div id="axleCont" class="ui-block-a"></div>
+						<div id="posCont" class="ui-block-b"></div>
+					</div>
+					<div id="tForm" class="ui-grid-b">
+					<div id="tForm-a" class="ui-block-a"></div>
+					<div id="tForm-b" class="ui-block-b"></div>
+					<div id="tForm-c" class="ui-block-c"></div>
+				</div>
+					<p>Defect List (tick all that apply)</p>
+					<div id="defectForm" class="ui-grid-a">
+						<div id="defForm-a" class="ui-block-a"></div>
+						<div id="defForm-b" class="ui-block-b"></div>
+					</div>
+					<div id="frmComment"></div>
+				<div class="ui-grid-b" style="height:46px;"  id="controlForm">
+				
+				
+				</div>
+				</div>
+			</form>	
+		</div>
+	</div><!-- /content -->
+
+	<div data-role="footer" class="ui-bar">
+		<a href="#dataLoadConfirm" style="margin-left:10px;" data-role="button" data-icon="arrow-d" data-rel="dialog" data-transition="slidedown">Load Server Data</a>
+				<!-- <div class="ui-block-b"></div> -->
+				<a href="#" style="margin-left:80px;" data-role="button" data-icon="user" onClick="renderCustomerForm()">Load in Customers</a>
+				
+				<a href="#" style="margin-left:80px;" data-role="button" data-icon="recycle" onClick="renderCustomerForm()">Send to Server</a>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" data-theme="a" id="dataLoadConfirm" data-close-btn="none">
+	<div data-role="header"><h1>ARE YOU SURE?</h1></div>
+	<div role="main">
+		This will Over-write all data on the device that is not alredy marked for sending.  <br>Please make sure you have an internet connection before continuing.
+		<div data-role="contentgroup" data-type="horizontal">
+			<a href="#pageOne" data-role="button" class="ui-shadow ui-icon-check ui-btn-icon-left ui-btn ui-corner-all ui-btn-inline" onClick="loadServerData()">Sure, let's do it!"</a>
+			<a href="#pageOne" data-role="button" class="ui-shadow ui-icon-delete ui-btn-icon-left ui-btn ui-corner-all ui-btn-inline" data-transition="slidedown">Cancel</a>
+		</div>
+	</div>
+</div>
+</body>
+</html>
