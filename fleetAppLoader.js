@@ -8,7 +8,7 @@ function loadServerData(){
 		
 		},
 		failure:function firefailMessage(e){
-			console.log(e);
+			alert("Unable to contact server, please ensure you are connected to the internet and try again.")
 		}
 	});
 }
