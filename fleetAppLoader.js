@@ -197,7 +197,6 @@ function addTrnDetail(callback){
 			'defID':grabActiveDefects(),
 			'comment':$('#comment').val()
 		};
-		// (5,1,'2015-04-16','215/55r16','Bridgestone','bs25445',12,14,12,32,0,0,'[6,14,16]','TEST')
 		tx.executeSql('INSERT INTO transac(vID, wpID, lastCheck, tyreS, tyreManfac, tyreSN, TD1, TD2, TD3, PSI, isRemould, regrooved, defID, comment) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 		[inVars.vID, inVars.wpID, dt, inVars.tyreS, inVars.tyreManfac, inVars.tyreSN, inVars.TD1, inVars.TD2, inVars.TD3, inVars.PSI, inVars.isRemould, inVars.regrooved, inVars.defID, inVars.comment],
 		function reultNewTrn(tx, rs){
@@ -255,8 +254,6 @@ function storeDecision(){
 	})
 }
 
-
-
 function grabActiveDefects(){
 	var def = [];
 	$.each($('#defectForm :checked'), function getDefVals(id, val){
@@ -268,13 +265,70 @@ function grabActiveDefects(){
 	return rDef;
 }
 
+function loadTransac(callback){
+	fleetDB.transaction(function performTran(tr){
+		tr.executeSql("SELECT vID, wpID, lastCheck, tyreS, tyreManfac, tyreSN, TD1, TD2, TD3, PSI, isRemould, regrooved, defID, comment FROM transac",[], function loadTran(tr, r){
+			callback(r.rows);
+		},
+		function catchError(tx, e){
+			console.log(e);
+		});
+	});
+}
 
+function buildTransacJSON(callback){
+	loadTransac(function catchCallback(data){
+		var jString = '{"dataset":[';
+		for (var i =0; i < data.length; i++){
+			jString +="{";
+			$.each(data.item(i), function itterateColumns(col, val){
+				jString += '"'+col+'":"'+val+'",';
+			})
+			jString = jString.substring(0, jString.length -1);
+			jString +="},";
+		}
+		jString = jString.substring(0, jString.length -1);
+		jString +="]}"
+		callback(jString);
+	})
+}
+
+function submitTransacJson(){
+	buildTransacJSON(function getJSON(str){
+		$.ajax({
+			type:"POST",
+			url:"http://192.168.99.33/fleetApp/server/webapp_sycDB.php",	
+			data:{dataset:str},
+			success: function itWorked(data){
+				if(data == 00000){
+					fleetDB.transaction(function truncTransac(tx){
+						tx.executeSql("DELETE FROM transac",[],function truncSuccess(tx, r){
+							alert("Server Sync Complete.  Fleet Check Info Has Been Stored.");
+						},
+						function truncFail(tx, e){
+							console.log(e);
+							alert("Your Information was sent to the server, howver there was an error clearing down the local copy. please close and reopen the app to refresh your data.")
+						})
+					})
+				}
+				else{
+					alert("There was an error on the server, please try again later.");
+				}
+			},
+			fail: function itDidntWork(e){
+				alert("Could not communicate with server, please ensure you have an internet connction and try again. \n\r If This problem persists please contact your administrator.")
+				console.log(e);
+			}
+		})	
+	})
+	
+}
 
 function newDateString(){
 	var dt = new Date();
 	var d = dt.getDate();
 	(d.toString().length == 1) ? d = '0'+d.toString() : d = d.toString();
-	var m = dt.getMonth();
+	var m = dt.getMonth()+1;
 	(m.toString().length == 1) ? m = '0'+m.toString() : m = m.toString();
 	var y = dt.getFullYear();
 	var dateString = y+"-"+m+"-"+d;

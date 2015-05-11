@@ -114,7 +114,7 @@ function renderDefectList(){
 			$('#defForm-'+pos).append('<input type="checkbox" name="'+lst.item(i).id+'" id="'+lst.item(i).id+'" onChange="storeDecision()"><label for="'+lst.item(i).id+'">'+lst.item(i).defName+'</label>');
 			(pos == "a") ? pos = "b" : pos = "a";
 		} // END loop
-		$('#frmComment').append('<label for="comment">Comments:</label><textarea name="comment" id="comment"></textarea>')
+		$('#frmComment').append('<label for="comment">Comments:</label><textarea name="comment" id="comment" onKeyUp="storeDecision()"></textarea>')
 		$('#defectForm').trigger("create");
 		$('#frmComment').trigger("create");
 		checkTranCount(function catchCountCallback(val){
